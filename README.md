@@ -186,34 +186,6 @@ Each client presents a menu to search rooms, lock a room, confirm a booking, or 
 
 ---
 
-## Usage Example
-
-**Terminal 1 — Server**
-```
-$ python server.py
-Server is listening on port 5000...
-[LOG] Client 127.0.0.1:52341 sent LOCK_ROOM R101 → 202 Lock Acquired
-[LOG] Client 127.0.0.1:52342 sent LOCK_ROOM R101 → 409 Room Already Locked
-```
-
-**Terminal 2 — Client 1**
-```
-$ python client.py
->>> Sending: LOCK_ROOM R101
-<<< Received: 202 Lock Acquired (expires in 30s)
-```
-
-**Terminal 3 — Client 2 (racing for the same room)**
-```
-$ python client.py
->>> Sending: LOCK_ROOM R101
-<<< Received: 409 Room Already Locked
-```
-
-<!-- 📌 Add a screenshot or GIF of the terminals above running side-by-side here -->
-
----
-
 ## Concurrency Testing
 
 Two automated tests validate the concurrency guarantees:
@@ -224,7 +196,7 @@ Spins up 10 clients that fire `LOCK_ROOM R101` at the exact same instant (synchr
 ```bash
 python test_race_condition.py
 ```
-<!-- 📌 Add a screenshot of the test output here -->
+![test_race_condition](images/test_race_condition.png)
 
 ### `test_timeout.py`
 Locks a room, waits past the timeout window, then sends `CONFIRM_BOOKING` — asserting the response is `410 Lock Expired`, and that the room can immediately be locked again (`202`).
@@ -232,7 +204,7 @@ Locks a room, waits past the timeout window, then sends `CONFIRM_BOOKING` — as
 ```bash
 python test_timeout.py
 ```
-<!-- 📌 Add a screenshot of the test output here -->
+![test_timeout](images/test_timeout.png)
 
 ---
 
@@ -259,3 +231,4 @@ python test_timeout.py
 ## Author
 
 Built by **Ashira Chansawang (Peak)** as a self-directed portfolio project to practice socket programming, concurrency control, and protocol design.
+
